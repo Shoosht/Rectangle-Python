@@ -21,9 +21,6 @@ def input_and_write_coordinates(file_name):
             else:
                 file.write(coordinate)
 
-def calculate_distance(point1, point2):
-    return math.sqrt((point1.x - point2.x)**2 + (point1.y - point2.y)**2)
-
 def read_points_from_file(file_name):
     with open(file_name, 'r') as file:
         text = file.read().replace(" ", "").replace("\n", ",")
@@ -36,6 +33,10 @@ def create_points(coordinates):
         temp = Point(int(coordinates[i]), int(coordinates[i+1]))
         points.append(temp)
     return points
+
+def calculate_distance(point1, point2):
+    return math.sqrt((point1.x - point2.x)**2 + (point1.y - point2.y)**2)
+
 
 def possible_rectangle(points):
     distanceAB = calculate_distance(points[0], points[1])
@@ -63,9 +64,37 @@ def possible_rectangle(points):
         break
 
     return rectangle_flag
-      
+
+def min_max_coordinates(points):
+    min_x = points[0].x
+    max_x = points[0].x
+    min_y = points[0].y
+    max_y = points[0].y
+    
+    for point in points[1:]:
+        if point.x < min_x:
+            min_x = point.x
+        elif point.x > max_x:
+            max_x = point.x
+        
+        if point.y < min_y:
+            min_y = point.y
+        elif point.y > max_y:
+            max_y = point.y
+    
+    return min_x, max_x, min_y, max_y
+
+def is_point_X_in_rectangle(points, x):
+    min_x, max_x, min_y, max_y = min_max_coordinates(points)
+
+    if min_x < points[x].x < max_x and min_y < points[x].y < max_y:
+        print(True)
+    else:
+        print(False)
+
 def main():
     file_name = "data.txt"
+    point_x = 3
 
     input_and_write_coordinates(file_name)
 
@@ -78,5 +107,7 @@ def main():
         print("The three points cannot form a rectangle.")
         sys.exit(1)
     
+    is_point_X_in_rectangle(points, point_x)
+
 if __name__ == "__main__":
     main()
