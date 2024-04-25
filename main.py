@@ -43,6 +43,8 @@ def possible_rectangle(points):
     distanceAC = calculate_distance(points[0], points[2])
     distanceBC = calculate_distance(points[1], points[2])
 
+    rectangle_diagonal = max(distanceAB, distanceAC, distanceBC)
+
     rectangle_flag = False
 
     while not rectangle_flag:
@@ -63,7 +65,7 @@ def possible_rectangle(points):
         
         break
 
-    return rectangle_flag
+    return rectangle_flag, rectangle_diagonal
 
 def min_max_coordinates(points):
     min_x = points[0].x
@@ -102,12 +104,14 @@ def main():
 
     points = create_points(coordinates)
 
-    rectangle = possible_rectangle(points)
+    rectangle, hypotenuse = possible_rectangle(points)
     if rectangle is not True:
         print("The three points cannot form a rectangle.")
         sys.exit(1)
     
     is_point_X_in_rectangle(points, point_x)
+
+    print("The diagonal length of the three point rectangle is", hypotenuse)
 
 if __name__ == "__main__":
     main()
